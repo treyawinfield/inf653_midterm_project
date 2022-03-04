@@ -17,8 +17,7 @@
         public function read() {
             // Create query
             $query = 'SELECT id, author
-                FROM ' . $this->table;
-            
+                FROM ' . $this->table;           
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -28,14 +27,13 @@
 
             return $stmt;
         }
-
-        /*
+      
         // Get single Author
         public function read_single() {
             // Create query
             $query = 'SELECT id, author
-                FROM ' . $this->table .
-                'WHERE   
+                FROM ' . $this->table . '
+                WHERE   
                     id = ?
                 LIMIT 0,1';
             
@@ -45,6 +43,7 @@
 
             // Bind id
             $stmt->bindParam(1, $this->id);
+            //$stmt->bindParam('id', $this->id);
 
             // Execute query
             $stmt->execute();
@@ -54,8 +53,7 @@
             // Set properties
             $this->author = $row['author'];
         }
-
-
+      
         // Create Author
         public function create() {
             // Create query
@@ -82,41 +80,37 @@
 
             return false;
         }
-
-        
+       
         // Update Author
         public function update() {
-            // Update query 
+            // Update query
             $query = 'UPDATE ' . $this->table . '
                 SET
                     author = :author
                 WHERE
                     id = :id';
-            
-            
+
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Clean data
-            $this->id = htmlspecialchars(strip_tags($this->id));
             $this->author = htmlspecialchars(strip_tags($this->author));
+            $this->id = htmlspecialchars(strip_tags($this->id));
 
             // Bind data
-            $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':author', $this->author);
+            $stmt->bindParam(':id', $this->id);
 
             // Execute query
             if($stmt->execute()) {
                 return true;
             }
-
             // Print error if something goes wrong w/ query
             printf("Error: %s.\n", $stmt->error);
 
             return false;
         }
-
-
+       
         // Delete Author
         public function delete() {
             // Create query
@@ -141,6 +135,5 @@
 
             return false;
         }
-        */
     }
 ?>
