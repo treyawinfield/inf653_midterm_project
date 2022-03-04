@@ -17,9 +17,7 @@
         public function read() {
             // Create query
             $query = 'SELECT id, author
-                FROM ' . $this->table .  
-               'ORDER BY
-                    id DESC';
+                FROM ' . $this->table;
             
 
             // Prepare statement
