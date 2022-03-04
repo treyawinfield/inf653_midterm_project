@@ -31,7 +31,7 @@
             return $stmt;
         }
 
-
+        /*
         // Get single Author
         public function read_single() {
             // Create query
@@ -143,5 +143,6 @@
 
             return false;
         }
+        */
     }
 ?>
