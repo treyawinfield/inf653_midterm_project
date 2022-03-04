@@ -17,9 +17,7 @@
         public function read() {
             // Create query
             $query = 'SELECT id, category
-                FROM ' . $this->table .  
-               'ORDER BY
-                    id DESC';
+                FROM ' . $this->table;           
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -29,17 +27,17 @@
 
             return $stmt;
         }
-
-
+      
         // Get single Category
         public function read_single() {
             // Create query
             $query = 'SELECT id, category
-                FROM ' . $this->table .
-                'WHERE   
+                FROM ' . $this->table . '
+                WHERE   
                     id = ?
                 LIMIT 0,1';
             
+
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
@@ -54,8 +52,7 @@
             // Set properties
             $this->category = $row['category'];
         }
-
-
+      
         // Create Category
         public function create() {
             // Create query
@@ -82,41 +79,38 @@
 
             return false;
         }
-
-        
-        // Update Author
+       
+        // Update Category
         public function update() {
-            // Update query 
+            // Update query
             $query = 'UPDATE ' . $this->table . '
                 SET
                     category = :category
                 WHERE
                     id = :id';
-            
+
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Clean data
-            $this->id = htmlspecialchars(strip_tags($this->id));
             $this->category = htmlspecialchars(strip_tags($this->category));
+            $this->id = htmlspecialchars(strip_tags($this->id));
 
             // Bind data
-            $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':category', $this->category);
+            $stmt->bindParam(':id', $this->id);
 
             // Execute query
             if($stmt->execute()) {
                 return true;
             }
-
             // Print error if something goes wrong w/ query
             printf("Error: %s.\n", $stmt->error);
 
             return false;
         }
-
-
-        // Delete Author
+       
+        // Delete Category
         public function delete() {
             // Create query
             $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
