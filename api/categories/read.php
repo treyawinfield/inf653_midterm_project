@@ -1,47 +1,35 @@
 <?php 
-    // Headers
-    header('Access-Control-Allow-Origin: *');
-    header('Content-Type: application/json');
-
-    include_once '../../config/Database.php';
-    include_once '../../models/Category.php';
-
-    // Instantiate DB & Connect
-    $database = new Database();
-    $db = $database->connect();
-
-    // Instantiate Category object
-    $category = new Category($db);
-
-    // Categories query
+    // Categories query, call read method
     $result = $category->read();
 
-    // Get row count
+    // Get row count from result of calling read() method
     $num = $result->rowCount();
 
     // Check if any categories
+    // If num value is greater than 0, there are categories
     if($num > 0) {
-        // Category array
+        // Category array to hold all the row values
         $categories_arr = array();
-        //$categories_arr['data']  = array();
 
+        // Loop through $result, fetch each row as an associative array
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
+            // Allows use of Category properties in the row, such as $id, $category
+            extract($row);   // instead of $row['id'] or $row['category'], etc.
 
+            // Create category item for each category, pass in property values 
             $category_item = array(
                 'id' => $id,
                 'category' => $category
             );
 
-            // Push to "data"
+            // Push each category item to category array
             array_push($categories_arr, $category_item);
-            //array_push($categories_arr['data'], $category_item);
         }
 
-        // Turn to JSON and output
+        // Turn PHP associative array from while-loop into JSON and output
         echo json_encode($categories_arr);
     } else {
-        // No Categories
+        // Row count is 0, No Categories in table
         echo json_encode(
             array('message' => 'No Categories Found')
         );

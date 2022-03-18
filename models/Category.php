@@ -8,12 +8,13 @@
         public $id;
         public $category;
 
-        // Constructor with DB
+        // Constructor, Pass in database
         public function __construct($db) {
+            // set connection to database
             $this->conn = $db;
         }
 
-        // Get Categories
+        // Method to read/get categories
         public function read() {
             // Create query
             $query = 'SELECT id, category
@@ -32,25 +33,32 @@
         public function read_single() {
             // Create query
             $query = 'SELECT id, category
-                FROM ' . $this->table . '
+                FROM ' . $this->table . ' c
                 WHERE   
-                    id = ?
-                LIMIT 0,1';
+                    id = :id';
             
-
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind id
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam('id', $this->id);
 
             // Execute query
             $stmt->execute();
 
+            // Fetch associative array that will be returned by $query
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Set properties
-            $this->category = $row['category'];
+            // Determine if there is a category for the specified row
+            if (isset($row['category'])) {
+                $this->category = $row['category'];
+                $result = $this->category;
+            }
+            else {
+                $result = null;
+            }
+
+            return $result;
         }
       
         // Create Category
@@ -63,14 +71,16 @@
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
-            // Clean data
+            // Clean data, wrap in security functions (no html special chars or tags)
             $this->category = htmlspecialchars(strip_tags($this->category));
 
-            // Bind data
+            // Bind named parameter to object's category property
             $stmt->bindParam(':category', $this->category);
 
             // Execute query
             if($stmt->execute()) {
+                // NOTE: per Traversy, not returning data here, rather creating it
+                // true indicates that query executed successfully
                 return true;
             }
 
@@ -82,7 +92,7 @@
        
         // Update Category
         public function update() {
-            // Update query
+            // Update query, WHERE clause indicates which category id to update
             $query = 'UPDATE ' . $this->table . '
                 SET
                     category = :category
@@ -92,7 +102,8 @@
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
-            // Clean data
+            // Clean data, wrap in security functions (no html special chars or tags)
+            // Clean all named parameters including id
             $this->category = htmlspecialchars(strip_tags($this->category));
             $this->id = htmlspecialchars(strip_tags($this->id));
 

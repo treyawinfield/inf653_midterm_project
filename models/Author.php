@@ -8,16 +8,18 @@
         public $id;
         public $author;
 
-        // Constructor with DB
+        // Constructor, Pass in database
         public function __construct($db) {
+            // Set connection to database
             $this->conn = $db;
         }
 
-        // Get Authors
+        // Method to read/get Authors
         public function read() {
             // Create query
             $query = 'SELECT id, author
-                FROM ' . $this->table;           
+                FROM ' . $this->table;  ' a
+                ORDER BY a.id';         
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -32,26 +34,32 @@
         public function read_single() {
             // Create query
             $query = 'SELECT id, author
-                FROM ' . $this->table . '
+                FROM ' . $this->table . ' a
                 WHERE   
-                    id = ?
-                LIMIT 0,1';
+                    id = :id';   // named parameter vs positional parameter (both ok here)
             
-
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind id
-            $stmt->bindParam(1, $this->id);
-            //$stmt->bindParam('id', $this->id);
+            $stmt->bindParam('id', $this->id);
 
             // Execute query
             $stmt->execute();
 
+            // Fetch associative array that will be returned by $query
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            // Set properties
-            $this->author = $row['author'];
+
+            // Determine if there is an author for the specified row
+            if (isset($row['author'])) {
+                $this->author = $row['author'];
+                $result = $this->author;
+            }
+            else {
+                $result = null;
+            }
+
+            return $result;
         }
       
         // Create Author
@@ -59,23 +67,25 @@
             // Create query
             $query = 'INSERT INTO ' . $this->table . '
                 SET
-                    author = :author';
+                    author = :author';   // use named parameters
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
-            // Clean data
+            // Clean data, wrap in security functions (no html special chars or tags)
             $this->author = htmlspecialchars(strip_tags($this->author));
 
-            // Bind data
+            // Bind named parameter to object's author property
             $stmt->bindParam(':author', $this->author);
 
             // Execute query
             if($stmt->execute()) {
+                // NOTE: per Traversy, not returning data here, rather creating it
+                // true indicates that query executed successfully
                 return true;
             }
-
-            // Print error if something goes wrong w/ query
+            
+            //Print error if something goes wrong w/ query
             printf("Error: %s.\n", $stmt->error);
 
             return false;
@@ -83,7 +93,7 @@
        
         // Update Author
         public function update() {
-            // Update query
+            // Update query, WHERE clause indicates which author id to update
             $query = 'UPDATE ' . $this->table . '
                 SET
                     author = :author
@@ -93,7 +103,8 @@
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
-            // Clean data
+            // Clean data, wrap in security functions (no html special chars or tags)
+            // Clean all named parameters including id
             $this->author = htmlspecialchars(strip_tags($this->author));
             $this->id = htmlspecialchars(strip_tags($this->id));
 
@@ -114,12 +125,14 @@
         // Delete Author
         public function delete() {
             // Create query
-            $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+            $query = 'DELETE FROM ' . $this->table . ' 
+                WHERE 
+                    id = :id';
             
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
-            // Clean data
+            // Clean data, only need id
             $this->id = htmlspecialchars(strip_tags($this->id));
 
             // Bind data
