@@ -26,6 +26,7 @@
         echo json_encode(
             array('id' => $last_id, 'category' => $category->category)
         );
+        exit();
     } else {
         echo json_encode(
             array('message' => 'Category Not Created')

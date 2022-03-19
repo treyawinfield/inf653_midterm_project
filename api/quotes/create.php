@@ -50,9 +50,11 @@
         echo json_encode(
             array('id' => $last_id, 'quote' => $quote->quote, 'authorId' => $quote->authorId, 'categoryId' => $quote->categoryId)
         );
+        exit();
     } else {
         echo json_encode(
             array('message' => 'Quote Not Created')
         );
+        exit();
     }
 ?>

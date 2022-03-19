@@ -11,7 +11,7 @@
     $data = json_decode(file_get_contents("php://input"));
     
     // Make sure $data's author parameter is not empty
-    if (!isset($data)) {
+    if (empty($data->author)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
@@ -30,6 +30,7 @@
         echo json_encode(
             array('id' => $last_id, 'author' => $author->author)
         );
+        exit();
     } else {
         echo json_encode(
             array('message' => 'Author Not Created')
