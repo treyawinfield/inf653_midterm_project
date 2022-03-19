@@ -38,7 +38,7 @@
             // Display error msg if no author exists at the given id
             if (!$authorExists) {
                 echo json_encode(
-                    array ('message' => 'Author ID Not Found')
+                    array ('message' => 'authorId Not Found')
                 );
                 exit();
             }
