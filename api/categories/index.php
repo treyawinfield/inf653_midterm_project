@@ -38,7 +38,7 @@
             // Display error msg if no category exists at the given id
             if (!$categoryExists) {
                 echo json_encode(
-                    array ('message' => 'Category ID Not Found')
+                    array ('message' => 'categoryId Not Found')
                 );
                 exit();
             }
