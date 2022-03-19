@@ -1,5 +1,5 @@
 <?php 
-    // Header
+    // Header 
     header('Access-Control-Allow-Methods: PUT');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
@@ -20,6 +20,9 @@
         // No rows exist with the given quote id
         echo json_encode(
             array('message' => 'No Quotes Found')
+        );
+        echo json_encode(
+            array('message' => 'Missing Required Parameters')
         );
         exit();
     }
