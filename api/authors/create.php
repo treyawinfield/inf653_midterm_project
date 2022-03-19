@@ -32,7 +32,7 @@
         );
     } else {
         echo json_encode(
-            array('message' => 'Author Not Created')
+            array('message' => 'Missing Required Parameter')
         );
         exit();
     }
