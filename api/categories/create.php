@@ -9,7 +9,7 @@
     // Make sure $data's category parameter is not empty
     if (empty($data->category)) {
         echo json_encode(
-            array('message' => 'Missing Required Parameter')
+            array('message' => 'Missing Required Parameters')
         );
         exit();
     }

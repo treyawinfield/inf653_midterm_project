@@ -11,7 +11,7 @@
     // Make sure none of $data's parameters are empty
     if (empty($data->quote) || empty($data->authorId) || empty($data->categoryId)) {
         echo json_encode(
-            array('message' => 'Missing Required Parameter')
+            array('message' => 'Missing Required Parameters')
         );
         exit();
     }

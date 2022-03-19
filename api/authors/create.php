@@ -13,7 +13,7 @@
     // Make sure $data's author parameter is not empty
     if (!isset($data)) {
         echo json_encode(
-            array('message' => 'Missing Required Parameter')
+            array('message' => 'Missing Required Parameters')
         );
         exit();
     }
