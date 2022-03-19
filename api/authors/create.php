@@ -11,7 +11,7 @@
     $data = json_decode(file_get_contents("php://input"));
     
     // Make sure $data's author parameter is not empty
-    if (!isset($data->author)) {
+    if (!isset($data)) {
         echo json_encode(
             array('message' => 'Missing Required Parameter')
         );
