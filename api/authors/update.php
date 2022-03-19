@@ -35,6 +35,7 @@
         echo json_encode(
             array('id' => $author->id, 'author' => $author->author)
         );
+        exit();
     } else {
         echo json_encode(
             array('message' => 'Author Not Updated')

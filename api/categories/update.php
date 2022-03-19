@@ -35,9 +35,11 @@
         echo json_encode(
             array('id' => $category->id, 'category' => $category->category)
         );
+        exit();
     } else {
         echo json_encode(
             array('message' => 'Category Not Updated')
         );
+        exit();
     }
 ?>
