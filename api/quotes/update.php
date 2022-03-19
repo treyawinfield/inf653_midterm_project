@@ -7,7 +7,7 @@
     $data = json_decode(file_get_contents("php://input"));
 
     // Make sure none of $data's parameters are empty
-    if (empty($data->id) || empty($data->quote) || empty($data->authorId) || empty($data->categoryId)) {
+    if (empty($data->quote) || empty($data->authorId) || empty($data->categoryId)) {
         echo json_encode(
             array('message' => 'Missing Required Parameter')
         );
@@ -20,9 +20,6 @@
         // No rows exist with the given quote id
         echo json_encode(
             array('message' => 'No Quotes Found')
-        );
-        echo json_encode(
-            array('message' => 'Missing Required Parameters')
         );
         exit();
     }
